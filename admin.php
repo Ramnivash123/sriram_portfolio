@@ -115,30 +115,6 @@
       font-size: 14px;
     }
 
-    table {
-      width: 100%;
-      margin-top: 40px;
-      border-collapse: collapse;
-    }
-
-    table, th, td {
-      border: 1px solid #444;
-    }
-
-    th, td {
-      padding: 12px;
-      text-align: center;
-    }
-
-    th {
-      background-color: #333;
-      color: #ffb400;
-    }
-
-    tr:nth-child(even) {
-      background-color: #1c1c1c;
-    }
-
   </style>
 </head>
 <body>
@@ -163,39 +139,6 @@
     <button onclick="uploadImage()">Upload Photo</button>
 
     <div id="preview"></div>
-
-    <?php
-    // Database connection
-    $conn = new mysqli("localhost", "root", "", "sriramphotography");
-
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    // Fetch all administrators
-    $sql = "SELECT * FROM administrator";
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        echo "<h2>Administrator Records</h2>";
-        echo "<table border='1' cellpadding='10' style='color:white; background-color:black;'>";
-        echo "<tr><th>ID</th><th>Username</th><th>Mobile</th></tr>";
-        while($row = $result->fetch_assoc()) {
-            echo "<tr>
-                    <td>" . htmlspecialchars($row["id"]) . "</td>
-                    <td>" . htmlspecialchars($row["username"]) . "</td>
-                    <td>" . htmlspecialchars($row["mobile"]) . "</td>
-                  </tr>";
-        }
-        echo "</table>";
-    } else {
-        echo "<p>No administrator records found.</p>";
-    }
-
-    $conn->close();
-    ?>
-
   </div>
 
   <script>
