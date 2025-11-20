@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>T.K.SRIRAM PHOTOGRAPHY</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "static/futura-pt/FuturaCyrillicBook.ttf";
+      background-color: #000;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 3rem;
+      height: 60px;
+      background-color: rgba(0, 0, 0, 0.95);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 10000;
+      backdrop-filter: blur(6px);
+      box-sizing: border-box;
+    }
+
+    .logo { font-size: 1.4rem; font-weight: 700; letter-spacing: 2px; }
+
+    .nav { display: flex; gap: 2rem; }
+
+    .nav a { color: #ccc; text-decoration: none; transition: color 0.3s ease; }
+    
+    .nav a:hover { color: #fff; }
+
+    .profile {
+        width: 100vw;
+        min-height: 100vh;
+        padding: 3rem 5vw;
+        background-color: #000000;
+        color: #eee;
+        font-family: 'Poppins', Arial, sans-serif;
+        text-align: left;
+        box-sizing: border-box;
+    }
+
+    .profile img {
+        display: block;
+        width: 220px;
+        height: 220px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 4px solid #444;
+        margin-bottom: 2rem;
+        margin-left: auto;
+        margin-right: auto;
+        transition: transform 0.3s ease;
+    }
+
+    .profile img:hover {
+        transform: scale(1.05);
+        border-color: #fff;
+    }
+
+    .profile h1 {
+        font-size: 3rem;
+        color: #fff;
+        letter-spacing: 1.2px;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    .profile p {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        margin-bottom: 1.6rem;
+        color: #ccc;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .featured-work {
+        max-width: 900px;
+        margin: 3rem auto 2rem auto;
+        color: #ddd;
+        text-align: center;
+    }
+
+    .featured-work h3 {
+        text-align: left;
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: #fff;
+    }
+
+    .featured-work p {
+        text-align: left;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    .view-portfolio {
+        display: inline-block;
+        padding: 0.7rem 2rem;
+        background-color: #222;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 700;
+        border-radius: 25px;
+        transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 2px 5px rgba(255, 255, 255, 0.5);
+    }
+
+    .view-portfolio:hover {
+        background-color: #fff;
+        color: #111;
+        box-shadow: 0 0 15px #fff, 0 0 30px #fff;
+    }
+
+    h2 {
+        text-align: center;
+        font-size: 2rem;
+        margin-top: 4rem;
+        color: #fff;
+    }
+
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    .profile a {
+        background-color: #222;
+        color: #fff;
+        padding: 0.7rem 1.8rem;
+        border-radius: 25px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 2px 5px rgba(255,255,255,0.5);
+    }
+
+    .profile a:hover {
+        background-color: #fff;
+        color: #111;
+        box-shadow: 0 0 15px #fff, 0 0 30px #fff;
+    }
+
+    @media (max-width: 768px) {
+    body {
+      padding: 0 1rem;
+    }
+
+    header {
+      flex-wrap: wrap;        /* Allow nav and logo to wrap */
+      justify-content: center;
+      padding: 0.5rem 1rem;
+      height: auto;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      flex: 0 1 100%;          /* Full width logo */
+      text-align: center;
+    }
+
+    .nav {
+      justify-content: center;
+      gap: 1rem;
+      flex: 1 1 100%;         /* Full width nav */
+      flex-wrap: wrap;
+    }
+
+    .nav a {
+      font-size: 1rem;
+      padding: 0.3rem 0.5rem;
+    }
+    
+    .profile {
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    .profile img {
+      width: 150px;
+      height: 150px;
+      margin-bottom: 1.5rem;
+    }
+
+    .profile h1 {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .profile p {
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .featured-work {
+      max-width: 100%;
+      margin: 2rem auto 1rem;
+      padding: 0 1rem;
+    }
+
+    .featured-work h3 {
+      font-size: 1.6rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .featured-work p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .view-portfolio {
+      padding: 0.6rem 1.6rem;
+      font-size: 1rem;
+    }
+    
+    .social-links {
+      gap: 1rem;
+    }
+
+    .profile a {
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+    }
+  }
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">SriramTK Photography</div>
+    <div class="nav">
+      <a href="/">Home</a>
+      <a href="/portfolio">My Works</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+    </div>
+  </header>
+
+  <div class="profile">
+    <br><br><br>
+    <img src="static/pics/447964342_421230564122757_938141465575292449_n.jpg" alt="T.K.Sriram Portrait">
+    <h1>SRIRAM TK</h1>
+    <p>Hello, I'm <strong>Sriram</strong> — a professional photographer with over five years of experience. I began my journey in wedding and event photography, and over time, my creative focus evolved toward fashion and commercial photography. To strengthen my skills, I completed a professional photography program at Light and Life Academy and assisted multiple photographers for around 1.5 years, gaining valuable industry experience.</p>
+    <p>I have a keen eye for detail and a strong visual sense, with a deep understanding of lighting, composition, and storytelling. Whether it’s fashion, product, or portrait photography, I approach every project with passion, precision, and intent to deliver visually compelling results.</p>
+    <p>Let’s work together to create images that tell your story.</p>
+    
+    <div class="featured-work">
+      <h3>Featured Work</h3>
+      <p>Some of my recent favorite projects include baby shoots, creativity and abstracts, fashion and portraits, etc...</p>
+      <a href="/portfolio" class="view-portfolio">View Full Works</a>
+    </div>
+    
+</div>
+
+
+</body>
+</html>

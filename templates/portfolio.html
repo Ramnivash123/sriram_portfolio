@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>T.K.SRIRAM PHOTOGRAPHY</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "static/futura-pt/FuturaCyrillicBook.ttf";
+      background-color: #000;
+      color: #fff;
+      overflow-x: hidden;
+      padding-top: 80px;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 3rem;
+      height: 60px;
+      background-color: rgba(0, 0, 0, 0.95);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 10000;
+      backdrop-filter: blur(6px);
+      box-sizing: border-box;
+    }
+
+    .logo { font-size: 1.4rem; font-weight: 700; letter-spacing: 2px; }
+
+    .nav { display: flex; gap: 2rem; }
+    .nav a { color: #ccc; text-decoration: none; transition: color 0.3s ease; }
+    .nav a:hover { color: #fff; }
+
+    .categories {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      cursor: pointer;
+      padding-top: 20px;
+    }
+    .categories a {
+      color: #ccc;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+    }
+    .categories a:hover { color: #fff; }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 30px 20px;
+      gap: 15px;
+    }
+
+    .gallery img {
+      width: 250px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 20000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.2);
+    }
+
+    .lightbox:target {
+      display: flex;
+    }
+
+    @media (max-width: 768px) {
+      .gallery img {
+        width: 45%;
+        height: auto;
+      }
+      header {
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 0.5rem 1rem;
+        height: auto;
+      }
+      .logo {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        flex: 0 1 100%;
+        text-align: center;
+      }
+      .nav {
+        justify-content: center;
+        gap: 1rem;
+        flex: 1 1 100%;
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">SriramTK Photography</div>
+    <div class="nav">
+      <a href="/">Home</a>
+      <a href="/portfolio">My Works</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+    </div>
+  </header>
+
+  <div class="categories">
+    <a onclick="showCategory('products')">Products</a>
+    <a onclick="showCategory('fashion')">Fashion and Portraits</a>
+    <a onclick="showCategory('mof')">MOF</a>
+    <a onclick="showCategory('babies')">Babies</a>
+    <a onclick="showCategory('streets')">Streets and Landscape</a>
+    <a onclick="showCategory('creatives')">Creatives and Abstracts</a>
+  </div>
+
+  <div class="gallery" id="gallery"></div>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" alt="Preview" />
+  </div>
+
+  <script src="https://apis.google.com/js/api.js"></script>
+  <script>
+    const API_KEY = "AIzaSyCRDRwYp0NJNabDabhRj2kzVV_XqdlyCD4"; // replace with your Drive API key
+
+    const FOLDER_IDS = {
+      babies: "1WXCwKOStFe6IxkvwYh_uAPXnD_-zj1Zl",
+      creatives: "1dNtCEgscYuW7g3MKGAB3QGuHvng3YMoY",
+      fashion: "11fFfucNm5D7QMeMksssRvZ2B_u3xDvqe",
+      mof: "1cWckEo8WAgncpCvnFM5stI2xUed4SUC7",
+      products: "1xPRSCxi2G53XHzqV5nsoEL35c8nFWT9s",
+      streets: "1b5sorNRwTB6quD-ESiCnMa25zltxt_xK"
+    };
+
+    function handleClientLoad() {
+      gapi.load("client", initClient);
+    }
+
+    async function initClient() {
+      await gapi.client.init({
+        apiKey: API_KEY,
+        discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"],
+      });
+      showCategory("babies");
+    }
+
+    async function showCategory(category) {
+      const gallery = document.getElementById("gallery");
+      gallery.innerHTML = "<p>Loading images...</p>";
+
+      const folderId = FOLDER_IDS[category];
+      if (!folderId) {
+        gallery.innerHTML = "<p>Folder ID not found.</p>";
+        return;
+      }
+
+      try {
+        const res = await gapi.client.drive.files.list({
+          q: `'${folderId}' in parents and mimeType contains 'image/' and trashed=false`,
+          fields: "files(id, name, thumbnailLink)",
+        });
+
+        const files = res.result.files;
+        gallery.innerHTML = "";
+
+        if (!files || files.length === 0) {
+          gallery.innerHTML = "<p>No images found.</p>";
+          return;
+        }
+
+        files.forEach((file) => {
+          const img = document.createElement("img");
+          img.src = file.thumbnailLink;
+          img.alt = file.name;
+          img.onclick = () => openLightbox(`https://drive.google.com/uc?id=${file.id}`);
+          gallery.appendChild(img);
+        });
+      } catch (err) {
+        console.error(err);
+        gallery.innerHTML = `<p style="color:red;">Error: ${err.message}</p>`;
+      }
+    }
+
+    function openLightbox(src) {
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = document.getElementById("lightbox-img");
+      lightboxImg.src = src;
+      lightbox.style.display = "flex";
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightbox").style.display = "none";
+    }
+
+    window.onload = () => handleClientLoad();
+  </script>
+</body>
+</html>
